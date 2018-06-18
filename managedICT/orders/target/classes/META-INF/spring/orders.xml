@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2014-2017, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. 
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!-- Configures the Camel Context-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd       http://camel.apache.org/schema/cxf       http://camel.apache.org/schema/cxf/camel-cxf.xsd       http://cxf.apache.org/transports/http/configuration       http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+    <import resource="classpath:META-INF/spring/orders-cxf.xml"/>
+    <camelContext id="orders" xmlns="http://camel.apache.org/schema/spring">
+        <jmxAgent createConnector="false" disabled="true" id="agent"
+            includeHostName="false" mask="false"
+            onlyRegisterProcessorWithCustomId="false"
+            registerNewRoutes="true" statisticsLevel="All" usePlatformMBeanServer="true"/>
+        <route id="orders">
+            <from id="orders" uri="cxf:bean:createOrderEndPoint"/>
+            <setHeader headerName="OPERATION" id="_setHeader1">
+                <constant>createOrder</constant>
+            </setHeader>
+            <marshal id="_marshal1">
+                <string charset="UTF-8"/>
+            </marshal>
+        </route>
+        <!--<route id="cxf">
+           
+            <from id="reportEndpointListener" uri="cxf:bean:reportEndpoint"/>
+            <recipientList id="dispatchToCorrectRoute">
+                <simple>direct:${header.operationName}</simple>
+            </recipientList>
+        </route>
+        <route id="report">
+            <from id="reportIncidentStarter" uri="direct:reportIncident"/>
+            <log id="logReportIncident" message="reportIncident Call"/>
+            <process id="reportIncidentProcess" ref="reportIncidentProcessor"/>
+            <to id="_to1" uri="log:output"/>
+        </route>
+        <route id="status">
+            <from id="statusIncidentStarter" uri="direct:statusIncident"/>
+            <log id="logStatusIncident" message="statusIncident Call"/>
+            <process id="statusIncidentProcess" ref="statusIncidentProcessor"/>
+            <to id="_to2" uri="log:output"/>
+        </route>-->
+    </camelContext>
+</beans>

@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:wsp="http://www.w3.org/ns/ws-policy"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://bsdapi.telkom.co.za/services/UpdateChange/20180117"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:ns2="http://bsdapi.telkom.co.za/schemas/UpdateChange/20180117/DataModel/Schema.xsd"
+	xmlns:eaifault="http://bsdapi.telkom.co.za/services/UpdateChange/20180117"
+	name="BSDAPI_UpdateChange_20180117" targetNamespace="http://bsdapi.telkom.co.za/services/UpdateChange/20180117">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+			xmlns:tns="http://bsdapi.telkom.co.za/services/UpdateChange/20180117"
+			xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+			xmlns:ns2="http://bsdapi.telkom.co.za/schemas/UpdateChange/20180117/DataModel/Schema.xsd"
+			xmlns:eaifault="http://bsdapi.telkom.co.za/services/UpdateChange/20180117"
+			xmlns="http://bsdapi.telkom.co.za/schemas/UpdateChange/20180117/DataModel"
+			attributeFormDefault="unqualified" elementFormDefault="qualified"
+			targetNamespace="http://bsdapi.telkom.co.za/schemas/UpdateChange/20180117/DataModel">
+
+			<xs:import
+				namespace="http://bsdapi.telkom.co.za/schemas/UpdateChange/20180117/DataModel/Schema.xsd"
+				schemaLocation="../schema/bsdapi_UpdateChange_20180117.xsd" />
+
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="UpdateChangeRequest">
+		<wsdl:part element="ns2:Request" name="ServicePart-UpdateChangeRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="UpdateChangeResponse">
+		<wsdl:part element="ns2:Response" name="ServicePart-UpdateChangeResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="UpdateChangeCallback">
+		<wsdl:part element="ns2:Response" name="ServicePart-UpdateChangeResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="UpdateChangeFault">
+		<wsdl:part element="ns2:Exception" name="ServicePart-UpdateChangeFault">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="UpdateChange_HTTP_PortType">
+		<wsdl:operation name="UpdateChange">
+			<wsdl:input message="tns:UpdateChangeRequest">
+			</wsdl:input>
+			<wsdl:output message="tns:UpdateChangeResponse">
+			</wsdl:output>
+			<wsdl:fault message="tns:UpdateChangeFault" name="UpdateChangeFault">
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateChangeCallback">
+			<wsdl:input message="tns:UpdateChangeResponse">
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="UpdateChange_Soap11_HTTP_EPBinding"
+		type="tns:UpdateChange_HTTP_PortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="UpdateChange">
+			<soap:operation
+				soapAction="http://bsdapi.telkom.co.za/services/UpdateChange/20180117/Request"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="UpdateChangeFault">
+				<soap:fault name="UpdateChangeFault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateChangeCallback">
+			<soap:operation
+				soapAction="http://bsdapi.telkom.co.za/services/UpdateChange/20180117/Reply"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="UpdateChangeHTTPService">
+		<wsdl:port binding="tns:UpdateChange_Soap11_HTTP_EPBinding"
+			name="UpdateChange_Soap11_HTTP_EP">
+			<soap:address location="http://0.0.0.0:10031/services/UpdateChange/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

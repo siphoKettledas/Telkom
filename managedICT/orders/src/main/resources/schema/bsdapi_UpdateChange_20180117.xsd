@@ -1,0 +1,1146 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://bsdapi.telkom.co.za/schemas/UpdateChange/20180117/DataModel/Schema.xsd"
+	attributeFormDefault="unqualified" elementFormDefault="qualified"
+	targetNamespace="http://bsdapi.telkom.co.za/schemas/UpdateChange/20180117/DataModel/Schema.xsd">
+	<xs:include schemaLocation="bsd-common_20180112.xsd" />
+	<xs:element name="Request">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="RequestType">
+					<xs:sequence>
+						<xs:element minOccurs="0" name="Sequence" type="SequenceType">
+							<xs:annotation>
+								<xs:documentation>Sequence applicable to a Change message
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ChangeInfo" type="ChangeInfoType">
+							<xs:annotation>
+								<xs:documentation>Holds all the information related to a Change.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="UpdateInfo" type="UpdateInfoType">
+							<xs:annotation>
+								<xs:documentation>Holds all the information related to the update of the Change.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="AffectedEntity" type="AffectedEntityType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>This specifies the affected entity information that is associated with this Change.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ContactInfo" type="ContactInfoType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Contact details associated to the Change.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+												<xs:element name="LocationInfo" type="LocationInfoType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Location information associated to the Change. Example: InstallationAddress
+								</xs:documentation>
+							</xs:annotation>
+												</xs:element>
+						<xs:element name="Attachment" type="AttachedResourceType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Allows adding and removing of attachments associated with the Change.
+These can either be URLs or file attachments.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element maxOccurs="unbounded" minOccurs="0"
+							name="AdditionalInfo" type="AdditionalInfoType">
+							<xs:annotation>
+								<xs:documentation>Additional template information that was filled in on the RFC template
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Response">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ResponseType">
+					<xs:sequence>
+						<xs:element minOccurs="0" name="Payload">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element minOccurs="0"
+										name="SourceSystemReference" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>The source system's reference number</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element minOccurs="0"
+										name="AdditionalSourceSystemReference" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>The source system's additional reference number
+											</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+                                    <xs:element name="ChangeStatus" type="xs:string" minOccurs="0">
+                                        <xs:annotation>
+                                        	<xs:documentation>The status of the Change created.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element
+										name="DestinationReference" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>The reference number created on BSD</xs:documentation>
+										</xs:annotation>
+                                    </xs:element>
+									<xs:any maxOccurs="unbounded"
+										minOccurs="0" namespace="##other" processContents="lax" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="SequenceType">
+		<xs:sequence>
+			<xs:element name="Key" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is the key value by which the sequencing
+						will be applied
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This is the sequence number applicable for the
+						key. Sequence number will start at 1. Sequencing will be applied
+						per key per sequence number
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ChangeInfoType">
+		<xs:sequence>
+			<xs:element name="DestinationReference" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Reference Number given to the ticket by the destination system.</xs:documentation></xs:annotation></xs:element>
+			<xs:element name="SourceSystemReference" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Reference Number given to the ticket by the source system.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdditionalSourceSystemReference"
+				type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Secondary Reference Number given to the ticket
+						by the source system.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CustomerIdentifier" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						The System will use the CustomerIdentifier to
+						determine the Customer/Tenant.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ChangeActivity"
+				type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						Activity as defined by ordering system. Example:
+						- Provide - Cease - Change No Dispatch
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						Default: Normal 1. Normal Change: These are the
+						changes that are happening for the first time.
+						i.e. Such changes are new implementation plan in
+						the system and usually will go through the
+						various (usual) CAB approval process at various
+						stages (all four approval phases provided OOTB).
+						Such a change might also go through the various
+						phases more than once during the change
+						implementation because this is new in nature and
+						unforeseen scenarios may come in which might
+						require re-plan , re-schedule, additional tasks
+						etc. Also such a change may be done a few times
+						in as a Normal change. And once such a change is
+						implemented a few times and there is scope of
+						repeating the same kind of change periodically
+						in future, this change may be taken as a
+						Standard change for future (Using templates). 2.
+						Standard Change: Once a Normal change is
+						implemented successfully a few times and the
+						processes like planning, schedules,
+						implementation tasks are well known, the process
+						and tasks involved becomes somewhat obvious and
+						such a change becomes kind of a routine
+						exercise, the change may be converted to a
+						Standard change for future implementations. This
+						can be achieved by using Change templates where
+						the tasks may be predefined. And not all CAB
+						approval phases will be required any more. May
+						be only the closedown-approval will be done and
+						the change manager takes care of taking such
+						changes to the CAB and get the approvals or
+						reporting to the CAB done. 3. Expedited Change:
+						This is more like a normal change, but this
+						needs to be implemented before the next CAB
+						meeting. However this is not urgent in nature.
+						For such a change the change-coordinator may
+						seek quick approvals from the CAB and
+						coordinates with the change implementers
+						(usually task implementers) about the importance
+						of the change. Such changes may be rare as most
+						new changes might fit into the Normal change
+						category. 4. Emergency Change: These changes
+						usually are result of an incident and the change
+						needs to be done to resolve the incident. In
+						such case the change-manager group does the
+						review and assignment to appropriate change
+						manager, associate an incident and adhere to a
+						process for the emergency change. The
+						change-coordinator-group is responsible for
+						getting the necessary approvals, provide info to
+						support the emergency change, etc. 5. Latent
+						Change: When a normal change that is already
+						approved needs to go through some additional
+						changes like additional tasks or task ownership,
+						change in scheduled dates etc, in such case the
+						extra changes (other than the approved changes)
+						may be done as usual. However the extra changes
+						need to be approved once, possibly at the close
+						down phase. In such case the Latent type can be
+						used. 6. No-impact Change: These are changes
+						that do not have any impact on the business in
+						general. Such changes are usually created using
+						templates soa that users know which changes
+						impact or does not impact the business.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						Free text field to describe the nature of ticket
+						in detail which may include the specifics of a
+						symptom. BSD has a limitation of 4000 characters
+						for the description, and thus, the description
+						will be truncated if longer.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ChangeStatus"
+				type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						This indicates the change's status when it's
+						created in the destination system. A predefined
+						configurable list is identified as part of
+						common configuration.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeStartDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>
+						Date and Time when Change was originated by
+						customer or service provider. Change reported
+						date. The following format xsd:dateTime
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeEndDate" type="xs:dateTime"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Date and Time when Change was delivered. The
+						following format xsd:dateTime
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeRequiredDate" type="xs:dateTime"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Date and Time when Change is required. The
+						following format xsd:dateTime
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TargetSystem" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						This will be used to route to the correct back
+						end system. Note that the target system and
+						SenderID can not be the same and the service
+						will raise an excpetion. Current valid values
+						are: - SPH - UNIBASE -UTS -CBS -CRM -OMS
+
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ServiceOrganisation"
+				type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						The service organisation within Telkom that this
+						change request must be routed to
+
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element block="" name="Priority" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						This indicates the priority of the ticket. Valid
+						values are: 1-High;2-Medium
+						High;3-Medium;4-Medium Low;5-Low;
+
+					</xs:documentation>
+				</xs:annotation>
+
+			</xs:element>
+			<xs:element block="" name="Impact" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						This indicates the impact of the ticket. Valid
+						values are: 1-High; 2-Non-Primetime Service
+						Outage; 3-Serious Degradation of level of
+						Service or Part of Service; 4-Minimal Impact;
+						5-Low to No Impact; None;
+					</xs:documentation>
+				</xs:annotation>
+
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+		<xs:complexType name="UpdateInfoType">
+		<xs:sequence>
+			<xs:element name="SourceSystemReference" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Reference Number given to the ticket by the sending system.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AdditionalSourceSystemReference" type="xs:string"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Secondary Reference Number given to the ticket by the sending system.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CustomerIdentifier" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The System will use the CustomerIdentifier to determine the Customer/Tenant.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ChangeActivity" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Activity as defined by ordering system. Example: - Provide - Cease - Change No Dispatch
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						Default: Normal 1. Normal Change: These are the
+						changes that are happening for the first time.
+						i.e. Such changes
+						are new implementation plan in
+						the system and usually will go
+						through the
+						various (usual) CAB approval process at various
+						stages
+						(all four approval phases provided OOTB).
+						Such a change might also
+						go through the various
+						phases more than once during the change
+						implementation because this is new in nature and
+						unforeseen
+						scenarios may come in which might
+						require re-plan , re-schedule,
+						additional tasks
+						etc. Also such a change may be done a few times
+						in
+						as a Normal change. And once such a change is
+						implemented a few
+						times and there is scope of
+						repeating the same kind of change
+						periodically
+						in future, this change may be taken as a
+						Standard
+						change for future (Using templates). 2.
+						Standard Change: Once a
+						Normal change is
+						implemented successfully a few times and the
+						processes like planning, schedules,
+						implementation tasks are well
+						known, the process
+						and tasks involved becomes somewhat obvious and
+						such a change becomes kind of a routine
+						exercise, the change may be
+						converted to a
+						Standard change for future implementations. This
+						can
+						be achieved by using Change templates where
+						the tasks may be
+						predefined. And not all CAB
+						approval phases will be required any
+						more. May
+						be only the closedown-approval will be done and
+						the change
+						manager takes care of taking such
+						changes to the CAB and get the
+						approvals or
+						reporting to the CAB done. 3. Expedited Change:
+						This is
+						more like a normal change, but this
+						needs to be implemented before
+						the next CAB
+						meeting. However this is not urgent in nature.
+						For such
+						a change the change-coordinator may
+						seek quick approvals from the
+						CAB and
+						coordinates with the change implementers
+						(usually task
+						implementers) about the importance
+						of the change. Such changes may
+						be rare as most
+						new changes might fit into the Normal change
+						category. 4. Emergency Change: These changes
+						usually are result of
+						an incident and the change
+						needs to be done to resolve the
+						incident. In
+						such case the change-manager group does the
+						review and
+						assignment to appropriate change
+						manager, associate an incident and
+						adhere to a
+						process for the emergency change. The
+						change-coordinator-group is responsible for
+						getting the necessary
+						approvals, provide info to
+						support the emergency change, etc. 5.
+						Latent
+						Change: When a normal change that is already
+						approved needs
+						to go through some additional
+						changes like additional tasks or task
+						ownership,
+						change in scheduled dates etc, in such case the
+						extra
+						changes (other than the approved changes)
+						may be done as usual.
+						However the extra changes
+						need to be approved once, possibly at the
+						close
+						down phase. In such case the Latent type can be
+						used. 6.
+						No-impact Change: These are changes
+						that do not have any impact on
+						the business in
+						general. Such changes are usually created using
+						templates soa that users know which changes
+						impact or does not
+						impact the business.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						Free text field to describe the nature of ticket
+						in detail which may include the specifics of a
+						symptom. BSD has a
+						limitation of 4000 characters
+						for the description, and thus, the
+						description
+						will be truncated if longer.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ChangeStatus" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						This indicates the change's status when it's
+						created in the destination system. A predefined
+						configurable list
+						is identified as part of
+						common configuration.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeStartDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation> Date and Time when Change was originated by customer or service provider. Change reported date. The following format xsd:dateTime
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeEndDate" type="xs:dateTime"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date and Time when Change was delivered. The following format xsd:dateTime
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ChangeRequiredDate" type="xs:dateTime"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date and Time when Change is required. The following format xsd:dateTime
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TargetSystem" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>
+						This will be used to route to the correct back
+						end system. Note that the target system and
+						SenderID can not be the
+						same and the service
+						will raise an excpetion. Current valid values
+						are:
+						- SPH - UNIBASE -UTS -CBS -CRM -OMS
+
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ServiceOrganisation" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The service organisation within Telkom that this change request must be routed to
+
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element block="" name="Priority" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This indicates the priority of the ticket. Valid values are: 1-High;2-Medium High;3-Medium;4-Medium Low;5-Low;
+
+					</xs:documentation>
+				</xs:annotation>
+
+			</xs:element>
+			<xs:element block="" name="Impact" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This indicates the impact of the ticket. Valid values are: 1-High; 2-Non-Primetime Service Outage; 3-Serious Degradation of level of Service or Part of Service; 4-Minimal Impact; 5-Low to No Impact; None;</xs:documentation>
+				</xs:annotation>
+
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AffectedEntityType">
+		<xs:sequence>
+			<xs:element name="AffectedEntityID">
+				<xs:annotation>
+					<xs:documentation>
+						The unique identifier (APID)/Circuit for the
+						affected main entity.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element minOccurs="0" name="AffectedEntityType">
+				<xs:annotation>
+					<xs:documentation>
+						This is the type of the affected entity. Current
+						Valid values are: - Product
+
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element minOccurs="0" name="AffectedEntityTitle">
+				<xs:annotation>
+					<xs:documentation>
+						This field describes the title of the affected
+						entity. A predefined configurable list is
+						identified as part of common configuration.
+						Current Valid values are: - Voice - Broadband
+
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element minOccurs="0" name="AffectedEntityAlias">
+				<xs:annotation>
+					<xs:documentation>
+						This is the service ID of the affected entity.
+						Current Valid values are: - DN - SubscriptionID
+
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element minOccurs="0" name="AssociatedEntities">
+				<xs:annotation>
+					<xs:documentation>This section provides information of associated entities to the main affected entity. For example an extension number for a PABX.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" name="AssociatedEntityRecord">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element
+										name="AssociatedEntityID">
+										<xs:annotation>
+											<xs:documentation>
+												The unique identifier
+												for the associated
+												entity.
+											</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction
+												base="xs:string">
+												<xs:minLength
+													value="1">
+												</xs:minLength>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element minOccurs="0"
+										name="AssociatedEntityType">
+										<xs:annotation>
+											<xs:documentation>
+												This field describes the
+												Type of affected entity
+												ID that is populated. A
+												predefined configurable
+												list is identified as
+												part of common
+												configuration. Current
+												Valid values are: -
+												ProductID - ComponentID
+											</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction
+												base="xs:string">
+												<xs:minLength
+													value="1">
+												</xs:minLength>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element minOccurs="0"
+										name="AssociatedEntityTitle">
+										<xs:annotation>
+											<xs:documentation>
+												This field describes the
+												title of the affected
+												entity. A predefined
+												configurable list is
+												identified as part of
+												common configuration.
+												Current Valid values
+												are:
+
+												- Voice - Broadband
+											</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction
+												base="xs:string">
+												<xs:minLength
+													value="1">
+												</xs:minLength>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element minOccurs="0"
+										name="AssociatedEntityAlias">
+										<xs:annotation>
+											<xs:documentation>
+												This is the service ID
+												of the affected entity.
+												Current Valid values
+												are:
+
+												- DN - SubscriptionID
+											</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction
+												base="xs:string">
+												<xs:minLength
+													value="1">
+												</xs:minLength>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContactInfoType">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="ContactInfoRecord">
+                <xs:annotation>
+                	<xs:documentation>Contact Information associated with the Change.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="LastName" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>The last name of the contact.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element minOccurs="0" name="FirstName" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>The first name of the contact.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ContactType" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>This describes the type of contact person the details are provided for. The following valid vaues exist:
+									- ReportedBy
+									- PrimaryContact
+									- AlternativeContact
+									- TicketPrimary
+									- TicketAlternative
+									- A Side
+									- B Side
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element maxOccurs="unbounded" minOccurs="0"
+							name="ContactMedium">
+							<xs:annotation>
+								<xs:documentation>This specifies the contact medium and value that is associated to the contact.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ContactMediumType" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>This specifies the type of contact medium. The following valid value exist:
+												- Phone - Home
+												- Phone - Work
+												- Email
+												- Fax
+												- Mail
+												- Mobile
+												- SMS
+											</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="ContactMediumValue" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>This specifies the value for the supplied contact medium.
+											</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element minOccurs="0" name="ContactID" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>The unique identifier of the contact.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+		<xs:complexType name="LocationInfoType">
+		<xs:sequence>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>
+						The human-readable name of the location.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Description">
+				<xs:annotation>
+					<xs:documentation>
+						Additional information that describes the
+						location.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="LocationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The type of location being described. Example:
+						InstallationAddress
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SiteID">
+				<xs:annotation>
+					<xs:documentation>
+						Unique identifier for the location
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element minOccurs="0" name="ContactID">
+				<xs:annotation>
+					<xs:documentation>
+						If the location is associated with a specific
+						contact, the ContactID should be populated.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"></xs:minLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element minOccurs="0" name="PhysicalAddress">
+				<xs:annotation>
+					<xs:documentation>
+						The physical location
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="6" name="AddressLine">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"></xs:minLength>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element minOccurs="0" name="PostalAddress">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="6" name="AddressLine">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"></xs:minLength>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element name="GPS" type="GPSLocationType" minOccurs="0">
+            	<xs:annotation>
+            		<xs:documentation>GPS coordinates of the location.</xs:documentation>
+            	</xs:annotation></xs:element>
+            <xs:element name="City" minOccurs="0">
+            	<xs:annotation>
+            		<xs:documentation>
+            			City where the location is situated.
+            		</xs:documentation>
+            	</xs:annotation>
+            	<xs:simpleType>
+            		<xs:restriction base="xs:string">
+            			<xs:minLength value="1"></xs:minLength>
+            		</xs:restriction>
+            	</xs:simpleType>
+            </xs:element>
+            <xs:element name="Municipality" minOccurs="0">
+            	<xs:annotation>
+            		<xs:documentation>
+            			Municipality where the location is situated.
+            		</xs:documentation>
+            	</xs:annotation>
+            	<xs:simpleType>
+            		<xs:restriction base="xs:string">
+            			<xs:minLength value="1"></xs:minLength>
+            		</xs:restriction>
+            	</xs:simpleType>
+            </xs:element>
+            <xs:element name="Province" minOccurs="0">
+            	<xs:annotation>
+            		<xs:documentation>
+            			Province where the location is situated.
+            		</xs:documentation>
+            	</xs:annotation>
+            	<xs:simpleType>
+            		<xs:restriction base="xs:string">
+            			<xs:minLength value="1"></xs:minLength>
+            		</xs:restriction>
+            	</xs:simpleType>
+            </xs:element>
+            <xs:element name="Country" minOccurs="0">
+            	<xs:annotation>
+            		<xs:documentation>
+            			Country where the location is situated.
+            		</xs:documentation>
+            	</xs:annotation>
+            	<xs:simpleType>
+            		<xs:restriction base="xs:string">
+            			<xs:minLength value="1"></xs:minLength>
+            		</xs:restriction>
+            	</xs:simpleType>
+            </xs:element>
+            <xs:element name="ZipCode" minOccurs="0">
+            	<xs:annotation>
+            		<xs:documentation>
+            			ZipCode of where the location is situated.
+            		</xs:documentation>
+            	</xs:annotation>
+            	<xs:simpleType>
+            		<xs:restriction base="xs:string">
+            			<xs:minLength value="1"></xs:minLength>
+            		</xs:restriction>
+            	</xs:simpleType>
+            </xs:element>
+            <xs:element name="PrimaryPhoneNumber" minOccurs="0">
+            	<xs:annotation>
+            		<xs:documentation>
+            			Primary Contact Number of where the location is
+            			situated.
+            		</xs:documentation>
+            	</xs:annotation>
+            	<xs:simpleType>
+            		<xs:restriction base="xs:string">
+            			<xs:minLength value="1"></xs:minLength>
+            		</xs:restriction>
+            	</xs:simpleType>
+            </xs:element>
+            
+		</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="GPSLocationType">
+		<xs:annotation>
+		<xs:documentation>
+Latitude is distance north or south of the equator (an imaginary circle around the Earth halfway between the North Pole and the South Pole) and longitude is distance east or west of the prime meridian (an imaginary line running from north to south through Greenwich, England).
+					</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Latitude">
+				<xs:annotation>
+					<xs:documentation>
+						Latitude value. 
+					</xs:documentation>
+				</xs:annotation>
+											<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1" />
+								</xs:restriction>
+							</xs:simpleType>
+			</xs:element>
+			<xs:element name="Longitude">
+				<xs:annotation>
+					<xs:documentation>
+						Latitude value. 
+					</xs:documentation>
+				</xs:annotation>
+											<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1" />
+								</xs:restriction>
+							</xs:simpleType>
+			</xs:element>
+			</xs:sequence>
+			</xs:complexType>
+
+
+	
+	<xs:complexType name="AttachedResourceType">
+		<xs:sequence>
+			<xs:element name="ResourceGuid">
+				<xs:annotation>
+					<xs:documentation>
+						The Unique identifier of the resource within the
+						event
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ResourceName">
+				<xs:annotation>
+					<xs:documentation>Name of the resource</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MimeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						Indicates the type of media used to store the
+						content.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SizeInBytes" minOccurs="0" type="xs:long">
+				<xs:annotation>
+					<xs:documentation>
+						Indicates the size of the resource in bytes. It
+						could be used by the end
+						user to estimate the download time and
+						storage needs
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Timestamp" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Time when the resource was created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ResourceDescription" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Additional comments about the resource
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SHA1hash" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>
+						The receiver of an attachment can use the hash to
+						verify the file was
+						correctly received, decoded and saved.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Delete" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>attachment file has been removed or not
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AttachmentType">
+				<xs:annotation>
+					<xs:documentation>Choice between URL and Base64Encoding attachment
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="Data" type="xs:base64Binary">
+							<xs:annotation>
+								<xs:documentation>
+									Provide information as binary contents coded
+									in Base64 encoding
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="URL">
+							<xs:annotation>
+								<xs:documentation>link where the resource is stored
+								</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdditionalInfoType">
+		<xs:sequence>
+			<xs:element name="Key">
+				<xs:annotation>
+					<xs:documentation>Describes what category the value will represent,
+						e.g. IP Address, Number of Nodes, etc.
+Limited to 250 characters
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="250" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Value">
+				<xs:annotation>
+					<xs:documentation>Value of the key, can be text or a number.
+Limited to 4000 characters			</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1" />
+						<xs:maxLength value="4000" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
